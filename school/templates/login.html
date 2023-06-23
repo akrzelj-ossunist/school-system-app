@@ -1,0 +1,7 @@
+{% block login_page %}
+    <form method="POST">
+    {{ form }}
+    {% csrf_token %}
+    <input type="submit" value="login">
+    </form>
+{% endblock %}

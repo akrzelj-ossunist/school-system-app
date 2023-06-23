@@ -1,0 +1,10 @@
+Hello home {{ username }}<br>
+<a href="/logout">Logout</a><br>
+
+{% if request.user.is_superuser %}
+<a href="/add_subject">Add new subject</a><br>
+<a href="/subjects">Subjects list</a><br>
+<a href="/register">Register new user</a><br>
+<a href="{% url 'user_list' role='stu' %}">Lista studenata</a><br>
+<a href="{% url 'user_list' role='prof' %}">Lista profesora</a>
+{% endif %}

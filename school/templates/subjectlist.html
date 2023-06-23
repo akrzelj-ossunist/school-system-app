@@ -1,0 +1,32 @@
+<style>
+    table, th, td {
+      border:1px solid black;
+    }
+    td {
+        padding: 5px 10px 5px 10px;
+    }
+</style>
+<table>
+    <tr>
+        <td>Ime</td>
+        <td>Kod</td>
+        <td>Program</td>
+        <td>Bodovi</td>
+        <td>Semestar</td>
+        <td>Izborni</td>
+    </tr>
+{% for subject in subjects %}
+    <tr>
+        <td>{{subject.ime}}</td>
+        <td>{{subject.kod}}</td>
+        <td>{{subject.program}}</td>
+        <td>{{subject.bodovi}}</td>
+        <td>{{subject.sem_redovni}}</td>
+        <td>{{subject.izborni}}</td>
+        <td><button><a href="{% url 'edit_subject' id=subject.id %}">Edit</a></button></td>
+        <td><button>Delete</button></td>
+    </tr>
+{% endfor %}
+</table>
+
+<button><a href="/">Home</a></button>

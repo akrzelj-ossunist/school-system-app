@@ -1,0 +1,78 @@
+{% extends 'home.html' %}
+{% block subjects %}
+<style>
+    table, th, td {
+      border:1px solid black;
+    }
+    td {
+        padding: 5px 10px 5px 10px;
+    }
+    .block{
+        display: flex;
+        width: 800px;
+        flex-direction: column;
+        margin-top: 40px;
+    }
+    .second-table{
+        margin-top: 60px;
+    }
+</style>
+<div class="block">
+    <table>
+        <p>Upisani predmeti:</p>
+        <tr>
+            <td>Naziv</td>
+            <td>Status</td>
+        </tr>
+        {% for predmet in enrolled %}
+        <tr>
+            <td>{{ predmet.predmet }}</td>
+            <td>{{ predmet.status_upisa }}</td>
+            {% if predmet.status_upisa == 'upisan' %}
+                <td><button><a href="{% url 'disenroll' upisni_id=predmet.id user_id=uid %}">Disenroll</a></button></td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+    <p class="second-table">Predmeti za upisati</p>
+    <table >
+        <tr>
+            <td>Naziv</td>
+            <td>Kod</td>
+            <td>Program</td>
+            <td>ECTS</td>
+            <td>Izborni</td>
+            <td>Semestar</td>
+        </tr>
+        {% for subject in subjects %}
+        {% if subject.sem_redovni <= 4 %}
+            {% if year_one >= 10 or subject.sem_redovni <= 2 %}
+            <tr>
+                <td>{{ subject.ime }}</td>
+                <td>{{ subject.kod }}</td>
+                <td>{{ subject.program }}</td>
+                <td>{{ subject.bodovi }}</td>
+                <td>{{ subject.izborni }}</td>
+                <td>{{ subject.sem_redovni }}</td>
+                <td><button><a href="{% url 'enroll' uid=uid sid=subject.id %}">Enroll</a></button></td>
+            </tr>
+            {% endif %}
+        {% endif %}
+        {% if subject.sem_redovni == 5 or subject.sem_redovni == 6 %}
+
+        <tr>
+            <td>{{ subject.ime }}</td>
+            <td>{{ subject.kod }}</td>
+            <td>{{ subject.program }}</td>
+            <td>{{ subject.bodovi }}</td>
+            <td>{{ subject.izborni }}</td>
+            <td>{{ subject.sem_redovni }}</td>
+            <td><button><a href="{% url 'enroll' uid=uid sid=subject.id %}">Enroll</a></button></td>
+        </tr>
+
+        {% endif %}
+        {% endfor %}
+    </table><br>
+</div>
+
+{% endblock %}

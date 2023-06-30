@@ -1,3 +1,5 @@
+{% extends 'home.html' %}
+{% block subjects %}
 <form method="POST">
     {% for field in form %}
         <p>
@@ -12,6 +14,7 @@
         </p>
     {% endfor %}
     {% csrf_token %}
-    <input type="submit" value="Register">
+    <input type="submit" value="Edit">
     <button type="button"><a href="/">Home</a></button>
     </form>
+{% endblock %}

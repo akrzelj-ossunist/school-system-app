@@ -16,3 +16,8 @@ class EditUser(ModelForm):
   class Meta:
     model = User
     fields = ['username', 'email', 'role', 'status']
+
+class TeacherForm(ModelForm):
+  class Meta:
+    model = Subject
+    fields = ["nositelj"]

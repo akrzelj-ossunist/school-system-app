@@ -1,0 +1,8 @@
+{% extends 'home.html' %}
+{% block subjects %}
+<form method="POST">
+    {{ form }}
+    {% csrf_token %}
+    <input type="submit" value="Assign">
+    </form>
+{% endblock %}

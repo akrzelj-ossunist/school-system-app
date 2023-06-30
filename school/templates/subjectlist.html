@@ -1,3 +1,5 @@
+{% extends 'home.html' %}
+{% block subjects %}
 <style>
     table, th, td {
       border:1px solid black;
@@ -5,28 +7,47 @@
     td {
         padding: 5px 10px 5px 10px;
     }
+    .block{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 40px;
+    }
+    .godina{
+        margin-top: 30px;
+    }
 </style>
-<table>
-    <tr>
-        <td>Ime</td>
-        <td>Kod</td>
-        <td>Program</td>
-        <td>Bodovi</td>
-        <td>Semestar</td>
-        <td>Izborni</td>
-    </tr>
-{% for subject in subjects %}
-    <tr>
-        <td>{{subject.ime}}</td>
-        <td>{{subject.kod}}</td>
-        <td>{{subject.program}}</td>
-        <td>{{subject.bodovi}}</td>
-        <td>{{subject.sem_redovni}}</td>
-        <td>{{subject.izborni}}</td>
-        <td><button><a href="{% url 'edit_subject' id=subject.id %}">Edit</a></button></td>
-        <td><button>Delete</button></td>
-    </tr>
-{% endfor %}
-</table>
-
-<button><a href="/">Home</a></button>
+<div class="block">
+    <table>
+        <tr>
+            <td>Ime</td>
+            <td>Kod</td>
+            <td>Program</td>
+            <td>Bodovi</td>
+            <td>Semestar</td>
+            <td>Izborni</td>
+            <td>Nositelj</td>
+        </tr>
+    {% for subject in subjects %}
+        <tr>
+            <td>{{subject.ime}}</td>
+            <td>{{subject.kod}}</td>
+            <td>{{subject.program}}</td>
+            <td>{{subject.bodovi}}</td>
+            <td>{{subject.sem_redovni}}</td>
+            <td>{{subject.izborni}}</td>
+            <td>{{subject.nositelj}}</td>
+            {% if not request.user.role == 'stu' %}
+            <td><button><a href="{% url 'students_on_subject' id=subject.id %}">Student list</a></button></td>
+            {% endif %}
+            {% if request.user.is_superuser %}
+            <td><button><a href="{% url 'assign_teacher' id=subject.id %}">Dodaj nositelja</a></button></td>
+            <td><button><a href="{% url 'edit_subject' id=subject.id %}">Edit</a></button></td>
+            <td><button><a href="{% url 'delete_subject' sid=subject.id %}">Delete</a></button></td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+    </table>
+</div>
+{% endblock %}

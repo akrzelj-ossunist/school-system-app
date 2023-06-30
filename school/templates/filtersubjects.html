@@ -1,0 +1,6 @@
+<form method="POST">
+    <input type="number" name='ects' placeholder="Bodovi">
+    <input type="number" name='semestar' placeholder="semestar">
+    {% csrf_token %}
+    <input type="submit" value="Filter">
+</form>

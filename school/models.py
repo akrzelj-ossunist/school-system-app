@@ -18,6 +18,7 @@ class Subject(models.Model):
     sem_redovni = models.IntegerField()
     sem_izvanredni = models.IntegerField()
     izborni = models.CharField(max_length=50, choices=IZBORNI)
+    nositelj = models.ForeignKey(User, limit_choices_to={'role': 'prof'}, on_delete=models.CASCADE, null=True)
 
 class Upisi(models.Model):
     STATUS_UPISA = (('upisan', 'Upisan'), ('polozen', 'Polozen'), ('izgubio', 'Izgubio potpis'))

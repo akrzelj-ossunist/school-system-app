@@ -1,3 +1,5 @@
+{% extends 'home.html' %}
+{% block subjects %}
 <style>
     table, th, td {
       border:1px solid black;
@@ -5,24 +7,99 @@
     td {
         padding: 5px 10px 5px 10px;
     }
-</style>
-<table>
-    <tr>
-        <td>Username</td>
-        <td>e-mail</td>
-        <td>Role</td>
-        <td>Status</td>
-    </tr>
-{% for user in users %}
-    <tr>
-        <td>{{user.username}}</td>
-        <td>{{user.email}}</td>
-        <td>{{user.role}}</td>
-        <td>{{user.status}}</td>
-        <td><button><a href="{% url 'edit_user' id=user.id %}">Edit</a></button></td>
-        <td><button>Delete</button></td>
-    </tr>
-{% endfor %}
-</table>
+    .block{
+        display: flex;
+        flex-direction: column;
+        width: 800px;
+        height: 500px;
+        margin-top: 40px;
+    }
+    table{
+        margin-bottom: 20px;
+    }
 
-<button><a href="/">Home</a></button>
+    .btn {
+        background-color: #fff;
+        border: 1px solid #d5d9d9;
+        border-radius: 8px;
+        box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+        box-sizing: border-box;
+        color: #0f1111;
+        cursor: pointer;
+        display: inline-block;
+        font-family: "Amazon Ember",sans-serif;
+        font-size: 13px;
+        line-height: 29px;
+        padding: 0 10px 0 11px;
+        position: relative;
+        text-align: center;
+        text-decoration: none;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        vertical-align: middle;
+        width: 200px;
+    }
+    .btn:hover {
+        background-color: #f7fafa;
+    }
+    .btn {
+        border-color: #008296;
+        box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+        outline: 0;
+    }
+    .btns{
+        display: flex;
+        justify-content: space-evenly;
+    }
+</style>
+<div class="block">
+    <table>
+        <tr>
+            <td>Username</td>
+            <td>e-mail</td>
+            <td>Role</td>
+            <td>Status</td>
+            {% if user.role == 'prof' %}
+            <td>Status predmeta</td>
+            {% endif %}
+        </tr>
+    {% for user in users %}
+        <tr>
+            <td>{{user.username}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.role}}</td>
+            <td>{{user.status}}</td>
+            {% if request.user.role == "prof" %}
+                <td>{{user.pred_status}}</td>
+                {% if user.pred_status == 'upisan' %}
+                    <td><button><a href="{% url 'edit_status' uid=user.id sid=sid status='polozen' %}">Polozio</a></button></td>
+                    <td><button><a href="{% url 'edit_status' uid=user.id sid=sid status='izgubio' %}">Izgubio pravo</a></button></td>
+                {% else %}
+                    {% if user.pred_status == 'izgubio' %}
+                        <td><button><a href="{% url 'edit_status' uid=user.id sid=sid status='polozen' %}">Polozio</a></button></td>
+                    {% else %}
+                        <td><button><a href="{% url 'edit_status' uid=user.id sid=sid status='izgubio' %}">Izgubio pravo</a></button></td>
+                    {% endif %}
+                    <td><button><a href="{% url 'edit_status' uid=user.id sid=sid status='upisan' %}">Upisan</a></button></td>
+                {% endif %}
+            {% endif %}
+            {% if request.user.is_superuser %}
+            <td><button><a href="{% url 'edit_user' id=user.id %}">Edit</a></button></td>
+            <td><button><a href="{% url 'delete_user' uid=user.id %}">Delete</a></button></td>
+            {% endif %}
+            {% if user.role == "stu" and request.user.is_superuser %}
+                <td><button><a href="{% url 'enrollment_form' id=user.id %}">Enrollment form</a></button></td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+    </table>
+    <div class="btns">
+        {% if request.user.role == "prof" %}
+            <a class="btn" href="{% url 'filter_by_status' sid=sid status='upisan' %}">Upisani studenti</a><br>
+            <a class="btn" href="{% url 'filter_by_status' sid=sid status='izgubio' %}">Izgubili potpis</a><br>
+            <a class="btn" href="{% url 'filter_by_status' sid=sid status='polozen' %}">Polozili</a><br>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

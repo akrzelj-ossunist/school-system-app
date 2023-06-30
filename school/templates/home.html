@@ -1,10 +1,51 @@
-Hello home {{ username }}<br>
-<a href="/logout">Logout</a><br>
-
-{% if request.user.is_superuser %}
-<a href="/add_subject">Add new subject</a><br>
-<a href="/subjects">Subjects list</a><br>
-<a href="/register">Register new user</a><br>
-<a href="{% url 'user_list' role='stu' %}">Lista studenata</a><br>
-<a href="{% url 'user_list' role='prof' %}">Lista profesora</a>
-{% endif %}
+<style>
+    body{
+        margin: 0;
+    }
+    .nav{
+        display: flex;
+        justify-content: space-between;
+        background-color: slategrey;
+        color: white;
+        padding: 10px;
+        font-size: 20px;
+    }
+    .right{
+        display: flex;
+        width: 50%;
+        justify-content: space-evenly;
+    }
+    a{
+        text-decoration: none;
+        cursor: pointer;
+        border-radius: 5px;
+        padding: 0px 10px 0 10px;
+        background-color: white;
+        color: black;
+    }
+</style>
+<div class="nav">Hello home {{ username }}
+    <div class="right">
+        <a href="/logout">Logout</a>
+        {% if request.user.is_superuser %}
+            <a href="/last_year_students">Last year students</a>
+            <a href="/add_subject">Add new subject</a>
+            <a href="/subjects">Subjects list</a>
+            <a href="/register">Register new user</a>
+            <a href="{% url 'user_list' role='stu' %}">Lista studenata</a>
+            <a href="{% url 'user_list' role='prof' %}">Lista profesora</a>
+        {% endif %}
+        {% if request.user.role == 'stu' %}
+            <a href="/subjects">Subjects list</a>
+            <a href="/filter_subjects">Filter subjects</a>
+            <a href="{% url 'upisani_nepolozeni' uid=request.user.id %}">Nepolozeni</a>
+            <a href="{% url 'predmeti_po_statusu' uid=request.user.id status='polozen' izborni='ne' %}">Polozeni predmeti</a>
+            <a href="{% url 'enrollment_form' id=request.user.id %}">Upis/ispis predmeta</a>
+        {% endif %}
+        {% if request.user.role == 'prof' %}
+            <a href="{% url 'my_subjects' id=request.user.id %}">My subjects</a>
+        {% endif %}
+    </div>
+</div>
+{% block subjects %}
+{% endblock %}
